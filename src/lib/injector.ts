@@ -3,7 +3,7 @@ import LoggerInstance from "./logger";
 import agendaFactory from "./agenda";
 import config from "../config";
 
-export default () => {
+export default ({ mongoConnection }) => {
   try {
     const agendaInstance = agendaFactory();
 

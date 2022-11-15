@@ -1,0 +1,142 @@
+import { Router, Request, Response, NextFunction } from "express";
+import Container from "typedi";
+import AddressService from "../../services/address";
+// import { Container } from "typedi";
+// import AuthService from "../../services/auth";
+// import { IUserInput } from "../../interfaces/IUser";
+// import middlewares from "../middlewares";
+// import { celebrate, Joi } from "celebrate";
+
+const route = Router();
+
+const addressesList = [
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
+  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
+  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
+  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
+];
+
+export default (app: Router) => {
+  app.use("/address", route);
+  const addressServiceInstance = Container.get(AddressService);
+
+  route.get("/", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // take only 20 addresses and make api call
+      const addresses = Array.from(addressesList).slice(0, 100);
+      console.log("addd", addresses.length);
+
+      const chunksize = 20;
+      const chunks: any = [];
+
+      addresses.forEach((item) => {
+        if (!chunks.length || chunks[chunks.length - 1].length == chunksize)
+          chunks.push([]);
+        chunks[chunks.length - 1].push(item);
+      });
+
+      // console.log("chunks", chunks);
+
+      const promises = chunks.map((chunk) => {
+        return addressServiceInstance.getAddressesWithBalance(chunk);
+      });
+      const results = await (
+        await Promise.all(promises)
+      ).map((i) => {
+        return i.result;
+      });
+
+      const finalResult = results.flat();
+      console.log("finalResult", finalResult.length);
+      return res.status(200).json({
+        addresses: finalResult,
+        totalBalance: finalResult.reduce(
+          (a: any, b: any) => Number(a) + Number(b.balance),
+          0
+        ),
+      });
+    } catch (e) {
+      return next(e);
+    }
+  });
+};
