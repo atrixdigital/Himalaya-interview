@@ -13,7 +13,7 @@ export default class AddressService {
     const config = {
       method: "get",
       url:
-        "https://api-goerli.etherscan.io/api?module=account&action=balancemulti&apikey=1H9ATRXXC1CQSW23A9VDD65C5M6XXIM3GX&address=" +
+        `${process.env.ETHERSCAN_API_URL}?module=account&action=balancemulti&apikey=${process.env.ETHERSCAN_API_KEY}&address=` +
         addresses.join(","),
       headers: {},
     };

@@ -115,8 +115,6 @@ export default (app: Router) => {
         chunks[chunks.length - 1].push(item);
       });
 
-      // console.log("chunks", chunks);
-
       const promises = chunks.map((chunk) => {
         return addressServiceInstance.getAddressesWithBalance(chunk);
       });
@@ -127,7 +125,6 @@ export default (app: Router) => {
       });
 
       const finalResult = results.flat();
-      console.log("finalResult", finalResult.length);
       return res.status(200).json({
         addresses: finalResult,
         totalBalance: finalResult.reduce(
