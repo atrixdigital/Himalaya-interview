@@ -1,100 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 import Container from "typedi";
 import AddressService from "../../services/address";
-// import { Container } from "typedi";
-// import AuthService from "../../services/auth";
-// import { IUserInput } from "../../interfaces/IUser";
-// import middlewares from "../middlewares";
-// import { celebrate, Joi } from "celebrate";
+import addressesList from "../data/list";
 
 const route = Router();
-
-const addressesList = [
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-  "0x39a582bE8039a526Bdf4730e4D1E3E0fE1Bc811b",
-  "0x902c38F2bcddF95E7BCE50A14515B4B62F502Bf2",
-  "0xBcFE52fEF72A70AD09245e40AEAcCE4B1e851320",
-  "0x0560de6E5a452a00F58a90cb5501C18e77EB91B4",
-];
 
 export default (app: Router) => {
   app.use("/address", route);
@@ -102,29 +11,36 @@ export default (app: Router) => {
 
   route.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // take only 20 addresses and make api call
+      // take max of 100 addresses and make api call
       const addresses = Array.from(addressesList).slice(0, 100);
-      console.log("addd", addresses.length);
 
+      // EtherScan MultiBalance API is limited to 20 addresses, so we need to split the array and make multiple calls
       const chunksize = 20;
       const chunks: any = [];
 
+      // split the array into chunks
       addresses.forEach((item) => {
         if (!chunks.length || chunks[chunks.length - 1].length == chunksize)
           chunks.push([]);
         chunks[chunks.length - 1].push(item);
       });
 
+      // make multiple calls to EtherScan API
       const promises = chunks.map((chunk) => {
         return addressServiceInstance.getAddressesWithBalance(chunk);
       });
+
+      // wait for all the promises to resolve
       const results = await (
         await Promise.all(promises)
       ).map((i) => {
         return i.result;
       });
 
+      // flatten the array to get the final result
       const finalResult = results.flat();
+
+      // return the final result alongside the total balance
       return res.status(200).json({
         addresses: finalResult,
         totalBalance: finalResult.reduce(

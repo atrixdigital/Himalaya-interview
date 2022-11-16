@@ -1,5 +1,5 @@
-import { IAddress, IAddressResponse } from "./../interfaces/IAddress";
-import { Service, Inject } from "typedi";
+import { IAddressResponse } from "./../interfaces/IAddress";
+import { Service } from "typedi";
 
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import axios from "axios";
 export default class AddressService {
   constructor() {}
 
+  /* This will make the EtherScan API call maximum 20 addresses per call */
   public async getAddressesWithBalance(
     addresses: Array<string>
   ): Promise<IAddressResponse> {

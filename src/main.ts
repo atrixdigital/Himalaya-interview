@@ -41,6 +41,7 @@ async function startServer() {
 
     `);
     });
+  return app;
 }
 
-startServer();
+export default startServer();
