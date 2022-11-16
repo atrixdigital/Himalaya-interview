@@ -36,11 +36,13 @@ describe("GET /Address", () => {
       .get("/api/address")
       .expect(200)
       .then((response) => {
+        console.log("response", response.body.addresses);
         console.log("response", response.body.totalBalance);
         const balanceCalculate = response.body.addresses.reduce(
           (a: any, b: any) => Number(a) + Number(b.balance),
           0
         );
+        console.log("balance", balanceCalculate);
 
         expect(response.body.totalBalance).toEqual(balanceCalculate);
       });
